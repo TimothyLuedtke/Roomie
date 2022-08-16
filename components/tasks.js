@@ -29,11 +29,10 @@ const taskList = {
 }
 
 
-
 export default function Tasks(props) {
 
-
-const [completed, setCompleted] = useState(taskList.task.completed);
+const [completed, setCompleted] = useState(taskList.task.completed) 
+{() => setCompleted(!completed)} className={completed ? 'text-md text-red-500 line-through' : 'text-md text-black-500'}
 
 
     return (
@@ -48,7 +47,7 @@ const [completed, setCompleted] = useState(taskList.task.completed);
                         {taskList.task.map((item) => (
                             <li key={item.item} className="py-4 flex">
                                 <div className="ml-3">
-                                    <p onClick={() => setCompleted(!completed)} className={completed ? 'text-md text-red-500 line-through' : 'text-md text-black-500'}>{item.item} </p>
+                                    <p onClick={completeTask}>{item.item} </p>
                                     
                                     <p className="text-sm text-gray-500">{item.description}</p>
                                     <p className="text-sm text-gray-500">{item.due_date}</p>
