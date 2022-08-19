@@ -1,38 +1,42 @@
-import Link from 'next/link';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
-const icon = [
-    {
-        name: 'Home',
-        path: '/',
-    },
-    {
-        name: 'Search',
-        path: '/search',
-    },
-    {
-        name: 'Tasks',
-        path: '/tasks',
-    },
-    {
-        name: 'Documents',
-        path: '/documents',
-    },
-    {
-        name: 'Settings',
-        path: '/settings',
-    },
+// import Tasks for tasks tab
+import Tasks from './Tasks';
 
-]
 export default function Navbar() {
     return (
-        <ul className="flex flex-row divide-gray-200">
-            {icon.map((icon) => (
-                <li key={icon.name} className="py-4 flex">
-                    <div className="ml-3">
-                        <Link href={icon.path} className="text-sm font-medium text-gray-900">{icon.name}</Link>
-                    </div>
-                </li>
-            ))}
-        </ul>
-    )
+        <Tabs variant="line" size="lg" align="center" >
+            <TabList mb="1em">
+                <Tab>Home</Tab>
+                <Tab>Tasks</Tab>
+                <Tab>Projects</Tab>
+                <Tab>Calendar</Tab>
+                <Tab>Notes</Tab>
+            </TabList>
+
+            <TabPanels>
+
+                <TabPanel>
+                    <p>Home</p>
+                </TabPanel>
+
+                <TabPanel>
+                    <Tasks />
+                </TabPanel>
+
+                <TabPanel>
+                    <p>Projects</p>
+                </TabPanel>
+
+                <TabPanel>
+                    <p>Calendar</p>
+                </TabPanel>
+
+                <TabPanel>
+                    <p>Notes</p>
+                </TabPanel>
+
+            </TabPanels>
+        </Tabs>
+    );
 }

@@ -1,19 +1,20 @@
 import Head from 'next/head';
-import Navbar from '../components/navbar';
-import Tasks from '../components/tasks';
-import Playground from '../components/playground';
+import Navbar from '../components/Navbar';
+import Tasks from '../components/Tasks';
+
+
+import { useState } from 'react';
 
 
 export default function Home() {
 
+
   return (
     <>
-      <Head>
-
-      </Head>
+      <Head />
       <Navbar />
       {/* <Tasks /> */}
-      <Playground />
     </>
+
   )
 }
