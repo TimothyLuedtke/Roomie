@@ -14,7 +14,7 @@ export default function Tasks() {
             taskName: 'Task Item',
             description: 'Task Item Description',
             due_date: 'Due Date',
-            list: 'Purchase',
+            taskList: 'Purchase',
             assigned_to: 'Bob Buyer',
             completed: false,
         },
@@ -23,7 +23,7 @@ export default function Tasks() {
             taskName: 'Task Item 2',
             description: 'Task Item Description 2',
             due_date: 'Due Date 2',
-            list: 'Pre-sale',
+            taskList: 'Pre-sale',
             assigned_to: 'Ally Agent',
             completed: true,
         },
@@ -32,26 +32,64 @@ export default function Tasks() {
             taskName: 'Task Item 3',
             description: 'Task Item Description 3',
             due_date: 'Due Date 3',
-            list: 'Pre-sale',
+            taskList: 'Pre-sale',
             assigned_to: 'Bob Buyer',
             completed: false,
         },
     ]);
 
+    ///////////////////
+    // CRUD FUNCTIONS//
+    ///////////////////
+
+    // CREATE TASK
+
+    const addTask = (task) => {
+        const id = Math.floor(Math.random() * 10000) + 1;
+        const newTask = { id, ...task };
+        setTasks([...tasks, newTask]);
+    };
+
+    // READ TASK
+
+    const getTasks = () => {
+        return tasks;
+    };
+
+    // FILTER TASKS
+
     function CompletedTasks() {
         // return completed tasks;
-        return tasks.filter((task) => task.completed === true);
+        return getTasks().filter((task) => task.completed === true);
     }
 
     function ActiveTasks() {
         // return active tasks;
-        return tasks.filter((task) => task.completed === false);
+        return getTasks().filter((task) => task.completed === false);
     }
+
+    // UPDATE TASK
+
+    const updateTask = (id, updatedTask) => {
+        setTasks(
+            tasks.map((task) =>
+                task.id === id ? { ...task, ...updatedTask } : task
+            )
+        );
+    };
+
+    // DELETE TASK
+
+    function DeleteTask(id) {
+        // delete task
+        setTasks(tasks.filter((task) => task.id !== id));
+    }
+
 
 
     function TaskTab() {
         return (
-            <Tabs variant="soft-rounded" size="lg" align="center" >
+            <Tabs variant="enclosed" size="lg" align="center" >
                 <TabList mb="1em">
                     <Tab>Active</Tab>
                     <Tab>Completed</Tab>
@@ -72,6 +110,17 @@ export default function Tasks() {
     function TaskTable({ tasks }) {
         return (
             <Table>
+                <Thead>
+                    <Tr>
+                        <Th></Th>
+                        <Th>Task</Th>
+                        <Th>Description</Th>
+                        <Th>Due</Th>
+                        <Th>Task List</Th>
+
+                    </Tr>
+                </Thead>
+                <Tbody>
 
                     {tasks.map(task => (
 
@@ -80,15 +129,18 @@ export default function Tasks() {
                                 <Checkbox isChecked={task.completed} />
                             </Td>
                             <Td>
-                                <Box>
-                                    <Text fontWeight="bold">{task.taskName}</Text>
-                                    <Text fontSize="sm" color="gray.300">{task.description}</Text>
-                                </Box>
+                                <Text fontWeight="bold">{task.taskName}</Text>
+                            </Td>
+                            <Td>
+                                <Text fontSize="sm" color="gray.300">{task.description}</Text>
+
                             </Td>
                             <Td>{task.due_date}</Td>
+                            <Td>{task.taskList}</Td>
                         </Tr>
 
                     ))}
+                </Tbody>
 
             </Table>
         );
@@ -104,14 +156,11 @@ export default function Tasks() {
                 </TaskTab>
 
             </Container>
-            <Button
-                as="a"
-                size="lg"
-                fontSize="lg"
-                align="right"
-            >
-                New Task
+
+            <Button variant='outline'>
+                Edit List
             </Button>
+
 
         </Box>
 
