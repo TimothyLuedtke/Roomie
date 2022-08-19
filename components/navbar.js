@@ -9,15 +9,16 @@ export default function Navbar() {
             <TabList mb="1em">
                 <Tab>Home</Tab>
                 <Tab>Tasks</Tab>
-                <Tab>Projects</Tab>
                 <Tab>Calendar</Tab>
-                <Tab>Notes</Tab>
+                <Tab>Documents</Tab>
+                <Tab>Inbox</Tab>
+                <Tab>Profile</Tab>
             </TabList>
 
             <TabPanels>
 
                 <TabPanel>
-                    <p>Home</p>
+                    <p></p>
                 </TabPanel>
 
                 <TabPanel>
@@ -25,15 +26,19 @@ export default function Navbar() {
                 </TabPanel>
 
                 <TabPanel>
-                    <p>Projects</p>
+                    <p></p>
                 </TabPanel>
 
                 <TabPanel>
-                    <p>Calendar</p>
+                    <p></p>
                 </TabPanel>
 
                 <TabPanel>
-                    <p>Notes</p>
+                    <p></p>
+                </TabPanel>
+
+                <TabPanel>
+                    <p></p>
                 </TabPanel>
 
             </TabPanels>
