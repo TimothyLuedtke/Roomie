@@ -1,8 +1,12 @@
 import { useState } from "react";
+//import Chakra Icons
+import { AddIcon } from "@chakra-ui/icons";
 //for Tasks function
-import { Box, Container, Text, Button, Table, Thead, Tr, Th, Checkbox, Tbody, Td, Tfoot } from "@chakra-ui/react";
+import { IconButton, Box, Container, Text, Button, Table, Thead, Tr, Th, Checkbox, Tbody, Td, Tfoot, Flex, Spacer, ButtonGroup } from "@chakra-ui/react";
 // for tab function
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+// for Form function
+import { FormControl, FormLabel, Input, FormHelperText, Textarea } from "@chakra-ui/react";
 
 
 
@@ -85,6 +89,97 @@ export default function Tasks() {
         setTasks(tasks.filter((task) => task.id !== id));
     }
 
+    ///////////
+    // FORMS///
+    ///////////
+
+    // ADD TASK FORM
+
+    function AddTaskForm() {
+        const [taskName, setTaskName] = useState('');
+        const [description, setDescription] = useState('');
+        const [due_date, setDue_date] = useState(Date);
+        const [taskList, setTaskList] = useState('');
+        const [assigned_to, setAssigned_to] = useState('');
+        const [completed, setCompleted] = useState(false);  // default to false
+    
+        const onSubmit = (e) => {
+            e.preventDefault();
+    
+            addTask({ taskName, description, due_date, taskList, assigned_to, completed });
+    
+            setTaskName('');
+            setDescription('');
+            setDue_date('');
+            setTaskList('');
+            setAssigned_to('');
+            setCompleted(false);
+        };
+        // add task form
+        return (
+            <Box>
+                <FormControl onSubmit={onSubmit}>
+                    <FormControl>
+                        
+                        <Input
+                            type="text"
+                            placeholder="Add Task"
+                            value={taskName}
+                            onChange={(e) => setTaskName(e.target.value)}
+                        />
+                    </FormControl>
+                    <FormControl>
+                        
+                        <Input
+                            type="text"
+                            placeholder="Add Description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </FormControl>
+                    <FormControl >
+                        
+                        <Input                            
+                            type="date"
+                            placeholder="Due Date"
+                            value={due_date}
+                            onChange={(e) => setDueDate(e.target.value)}
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <Input
+                            type="text"
+                            placeholder="Add Task List"
+                            value={taskList}
+                            onChange={(e) => setTaskList(e.target.value)}
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <Input
+                            type="text"
+                            placeholder="Assigned To"
+                            value={assigned_to}
+                            onChange={(e) => setAssignedTo(e.target.value)}
+                        />
+                    </FormControl>
+                    <Button
+                    variant='outline'
+                    type='submit'
+                    value={addTask}
+                    >
+                        Save
+                    </Button>
+                    
+                </FormControl>
+            </Box>
+        );
+    }
+
+
+
+    // EDIT TASK FORM
+    
+
 
 
     function TaskTab() {
@@ -93,6 +188,8 @@ export default function Tasks() {
                 <TabList mb="1em">
                     <Tab>Active</Tab>
                     <Tab>Completed</Tab>
+                    <Tab>Add</Tab>
+                    <Tab>Edit</Tab>
                 </TabList>
 
                 <TabPanels>
@@ -101,6 +198,12 @@ export default function Tasks() {
                     </TabPanel>
                     <TabPanel>
                         <TaskTable tasks={CompletedTasks()} />
+                    </TabPanel>
+                    <TabPanel>  
+                        <AddTaskForm addTask={addTask} />
+                    </TabPanel>
+                    <TabPanel>
+                        {/* <EditTaskForm tasks={tasks} updateTask={updateTask} /> */}
                     </TabPanel>
                 </TabPanels>
             </Tabs>
@@ -140,7 +243,28 @@ export default function Tasks() {
                         </Tr>
 
                     ))}
+
                 </Tbody>
+                <Tr>
+                    <Td>
+                    </Td>
+                    <Td>
+                        <Box>
+                            <Text fontSize="sm" color="gray.300">Showing {tasks.length} of {tasks.length} tasks</Text>
+                        </Box>
+                    </Td>
+                    <Td>
+                        <Button variant='outline'>
+                            Edit List
+                        </Button>
+                    </Td>
+                    <Td>
+                        <Button variant='outline'>
+                            Delete List
+                        </Button>
+                    </Td>
+                </Tr>
+
 
             </Table>
         );
@@ -156,10 +280,6 @@ export default function Tasks() {
                 </TaskTab>
 
             </Container>
-
-            <Button variant='outline'>
-                Edit List
-            </Button>
 
 
         </Box>
