@@ -1,6 +1,6 @@
 import { useState } from "react";
 //import Chakra Icons
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
 //for Tasks function
 import { IconButton, Box, Container, Text, Button, Table, Thead, Tr, Th, Checkbox, Tbody, Td, Tfoot, Flex, Spacer, ButtonGroup } from "@chakra-ui/react";
 // for tab function
@@ -9,6 +9,8 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { Form, useDisclosure, FormControl, FormLabel, Input, FormHelperText, Textarea } from "@chakra-ui/react";
 // for Modal function
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from "@chakra-ui/react";
+// for Menu Button
+import { Menu, MenuButton, MenuList, MenuItem, MenuDivider } from "@chakra-ui/react";
 
 
 
@@ -43,6 +45,32 @@ export default function Tasks() {
             completed: false,
         },
     ]);
+
+    //DROPDOWN MENU BUTTON
+
+    /// creating a function to map through menuItems based on total number if menuItem given through their dropText
+    function MenuDropdownButton({ text, menuItems[]}) {
+
+        const menuItem = (dropText) => {
+            return (
+                <MenuItem onClick={onOpen}>{dropText}</MenuItem>
+            )
+        }
+        const { isOpen, onOpen, onClose } = useDisclosure()
+        return (
+            <>
+                <Menu>
+                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />} onClick={onOpen}>
+                        {text}
+                    </MenuButton>
+                    <MenuList>
+                        {menuItem(')}
+                    </MenuList>
+                </Menu>
+            </>
+        )
+    }
+
 
     ///////////////////
     // CRUD FUNCTIONS//
