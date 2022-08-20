@@ -6,7 +6,9 @@ import { IconButton, Box, Container, Text, Button, Table, Thead, Tr, Th, Checkbo
 // for tab function
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 // for Form function
-import { FormControl, FormLabel, Input, FormHelperText, Textarea } from "@chakra-ui/react";
+import { Form, useDisclosure, FormControl, FormLabel, Input, FormHelperText, Textarea } from "@chakra-ui/react";
+// for Modal function
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 
 
 
@@ -89,6 +91,39 @@ export default function Tasks() {
         setTasks(tasks.filter((task) => task.id !== id));
     }
 
+    /////////////////
+    ///  MODALS  ////
+    /////////////////
+
+    function AddTaskModal() {
+        const { isOpen, onOpen, onClose } = useDisclosure()
+        return (
+          <>
+            <Button onClick={onOpen}>Add Task</Button>
+      
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Add Task</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <AddTaskForm />
+                    </ModalBody>
+                    
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                        <Button variant="ghost">Secondary Action</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            </>
+        )
+    }
+
+
+
     ///////////
     // FORMS///
     ///////////
@@ -102,12 +137,12 @@ export default function Tasks() {
         const [taskList, setTaskList] = useState('');
         const [assigned_to, setAssigned_to] = useState('');
         const [completed, setCompleted] = useState(false);  // default to false
-    
+
         const onSubmit = (e) => {
             e.preventDefault();
-    
+
             addTask({ taskName, description, due_date, taskList, assigned_to, completed });
-    
+
             setTaskName('');
             setDescription('');
             setDue_date('');
@@ -120,7 +155,7 @@ export default function Tasks() {
             <Box>
                 <FormControl onSubmit={onSubmit}>
                     <FormControl>
-                        
+
                         <Input
                             type="text"
                             placeholder="Add Task"
@@ -129,7 +164,7 @@ export default function Tasks() {
                         />
                     </FormControl>
                     <FormControl>
-                        
+
                         <Input
                             type="text"
                             placeholder="Add Description"
@@ -138,8 +173,8 @@ export default function Tasks() {
                         />
                     </FormControl>
                     <FormControl >
-                        
-                        <Input                            
+
+                        <Input
                             type="date"
                             placeholder="Due Date"
                             value={due_date}
@@ -163,13 +198,13 @@ export default function Tasks() {
                         />
                     </FormControl>
                     <Button
-                    variant='outline'
-                    type='submit'
-                    value={addTask}
+                        variant='outline'
+                        type='submit'
+                        value={addTask}
                     >
                         Save
                     </Button>
-                    
+
                 </FormControl>
             </Box>
         );
@@ -178,7 +213,7 @@ export default function Tasks() {
 
 
     // EDIT TASK FORM
-    
+
 
 
 
@@ -188,8 +223,7 @@ export default function Tasks() {
                 <TabList mb="1em">
                     <Tab>Active</Tab>
                     <Tab>Completed</Tab>
-                    <Tab>Add</Tab>
-                    <Tab>Edit</Tab>
+
                 </TabList>
 
                 <TabPanels>
@@ -198,12 +232,6 @@ export default function Tasks() {
                     </TabPanel>
                     <TabPanel>
                         <TaskTable tasks={CompletedTasks()} />
-                    </TabPanel>
-                    <TabPanel>  
-                        <AddTaskForm addTask={addTask} />
-                    </TabPanel>
-                    <TabPanel>
-                        {/* <EditTaskForm tasks={tasks} updateTask={updateTask} /> */}
                     </TabPanel>
                 </TabPanels>
             </Tabs>
@@ -247,11 +275,10 @@ export default function Tasks() {
                 </Tbody>
                 <Tr>
                     <Td>
+
                     </Td>
                     <Td>
-                        <Box>
-                            <Text fontSize="sm" color="gray.300">Showing {tasks.length} of {tasks.length} tasks</Text>
-                        </Box>
+                        <AddTaskModal />
                     </Td>
                     <Td>
                         <Button variant='outline'>
@@ -262,6 +289,13 @@ export default function Tasks() {
                         <Button variant='outline'>
                             Delete List
                         </Button>
+                    </Td>
+                </Tr>
+                <Tr>
+                    <Td>
+                        <Box>
+                            <Text fontSize="sm" color="gray.300">Showing {tasks.length} of {tasks.length} tasks</Text>
+                        </Box>
                     </Td>
                 </Tr>
 
