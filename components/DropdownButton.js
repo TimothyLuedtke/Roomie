@@ -1,8 +1,7 @@
 
-import { Menu, MenuButton, Button, MenuList, MenuItem, MenuDivider, Text } from "@chakra-ui/react";
+import { Menu, MenuButton, Button, MenuList, MenuItem, MenuDivider, Text, styled } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import { MapAscendingDueDate, MapDescendingDueDate } from "../pages/Tasklist";
 
 //DROPDOWN MENU BUTTON
 
@@ -17,15 +16,14 @@ function DropdownReorderButton({ label, descendLabel = "Newest", ascendLabel = "
 
 
         <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                {label}
-                {sort}
+            <MenuButton  as={Button} fontSize='sm'  fontWeight='bold' background='transparent'  rightIcon={<ChevronDownIcon />}>
+                {label}                
             </MenuButton>
             <MenuList>
-                <MenuItem value={setSort} onClick={() => setSort[MapDescendingDueDate]}>
+                <MenuItem value={setSort} onClick={() => setSort}>
                     {descendLabel}
                 </MenuItem>
-                <MenuItem value={setSort} onClick={() => setSort[MapAscendingDueDate]}>
+                <MenuItem value={setSort} onClick={() => !setSort}>
                     {ascendLabel}
                 </MenuItem>
             </MenuList>
