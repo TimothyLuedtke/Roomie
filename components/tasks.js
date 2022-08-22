@@ -72,7 +72,7 @@ export default function Tasks() {
         const { isOpen, onOpen, onClose } = useDisclosure()
         return (
             <>
-                <Button onClick={onOpen}>Add Task</Button>
+                <Button onClick={onOpen} background= 'transparent' variant='outline'>Add Task</Button>
 
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
@@ -118,7 +118,7 @@ export default function Tasks() {
 
             setTaskName('');
             setDescription('');
-            setDue_date('');
+            setDue_date(Date);
             setTaskList('');
             setAssigned_to('');
             setCompleted(false);
@@ -126,7 +126,7 @@ export default function Tasks() {
         // add task form
         return (
             <Box>
-                <Form onSubmit={onSubmit}>
+                <FormControl onSubmit={onSubmit}>
                 
                     <FormControl>
 
@@ -150,9 +150,10 @@ export default function Tasks() {
 
                         <Input
                             type="date"
-                            placeholder="Due Date"
+                            placeholder="Add Due Date"
                             value={due_date}
-                            onChange={(e) => setDueDate(e.target.value)}
+                            onChange={(e) => setDue_date(e.target.value)}
+
                         />
                     </FormControl>
                     <FormControl>
@@ -168,12 +169,11 @@ export default function Tasks() {
                             type="text"
                             placeholder="Assigned To"
                             value={assigned_to}
-                            onChange={(e) => setAssigned_To(e.target.value)}
+                            onChange={(e) => setAssigned_to(e.target.value)}
                         />
                     </FormControl>
                     <Button
                         variant='outline'
-                        justifyContent='end'
                         type='submit'
                         value={addTask}
                     >
@@ -181,7 +181,7 @@ export default function Tasks() {
                     </Button>
 
                 
-                </Form>
+                </FormControl>
             </Box>
         );
     }
@@ -270,6 +270,7 @@ export default function Tasks() {
             </Box>
         );
     }
+
 
 
 
