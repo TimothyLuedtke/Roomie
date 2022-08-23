@@ -7,13 +7,26 @@ import { useState, useEffect } from "react";
 export const TaskTable = () => {
     const [taskList, setTaskList] = useState(TaskAPI);
 
-    const filteredTasks = (taskList) => {
-        return taskList.filter((task) => task.completed === false);
-    };
+  // filter the task list by completed status
+    const [filter, setFilter] = useState('all');
+
+    const handleFilter = (e) => {
+        setFilter(e.target.value);
+    }
+
+    useEffect(() => {
+        if (filter === 'all') {
+            setTaskList(TaskAPI);
+        } else if (filter === 'completed') {
+            setTaskList(TaskAPI.filter((task) => task.completed === true));
+        } else if (filter === 'incomplete') {
+            setTaskList(TaskAPI.filter((task) => task.completed === false));
+        }
+    }, [filter]);
 
 
-    const MapTasks = ({filteredTasks}) => {
-        return {listProps}.map((taskItem) => {
+    const MapTasks = () => {
+        return taskList.map((taskItem) => {
 
             return <TaskRow
                 key={taskItem.id}
@@ -33,9 +46,16 @@ export const TaskTable = () => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Button onClick={filteredTasks}>Completed</Button>
+                            {/* filter buttons */}
+                            <Tr>
+                                <Td>
+                                    <Button onClick={handleFilter} value='all'>All</Button>
+                                    <Button onClick={handleFilter} value='completed'>Completed</Button>
+                                    <Button onClick={handleFilter} value='incomplete'>Incomplete</Button>
+                                </Td>
+                            </Tr>
                             <MapTasks 
-                            listProps = {taskList} />
+                             />
                         </Tbody>
                     </Table>
                 </Box>
