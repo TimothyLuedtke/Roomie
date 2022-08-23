@@ -1,34 +1,35 @@
 
-import { Menu, MenuButton, Button, MenuList, MenuItem, MenuDivider, Text, styled } from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { Menu, MenuButton, Button, MenuList, MenuItem, MenuDivider, Text } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+
 
 //DROPDOWN MENU BUTTON
 
 /// creating a function to map through menuItems based on total number if menuItem given through their dropText
-function DropdownReorderButton({ label, descendLabel = "Newest", ascendLabel = "Oldest" }) {
-
-    const [sort, setSort] = useState();
-
-
+export function DropdownSortButton({ label, descendLabel = "Newest", ascendLabel = "Oldest", setSortState }) {
 
     return (
 
-
         <Menu>
-            <MenuButton  as={Button} fontSize='sm'  fontWeight='bold' background='transparent'  rightIcon={<ChevronDownIcon />}>
-                {label}                
+            <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+            >
+                {label}
             </MenuButton>
             <MenuList>
-                <MenuItem value={setSort} onClick={() => setSort}>
-                    {descendLabel}
+                <MenuItem onClick={() => setSortState("none")}>
+                    <Text>{label}</Text>
                 </MenuItem>
-                <MenuItem value={setSort} onClick={() => !setSort}>
-                    {ascendLabel}
+                <MenuDivider />
+                <MenuItem onClick={() => setSortState("ascending")}>
+                    <Text>{ascendLabel}</Text>
+                </MenuItem>
+                <MenuItem onClick={() => setSortState("descending")}>
+                    <Text>{descendLabel}</Text>
                 </MenuItem>
             </MenuList>
         </Menu>
     );
 }
-
-export default DropdownReorderButton;

@@ -8,9 +8,11 @@ import { Form, useDisclosure, FormControl, Input, } from "@chakra-ui/react";
 // for Modal function
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 
-import DropdownReorderButton from "./DropdownButton";
+import  { DropdownReorderButton } from "./DropdownButton";
 
 import { TaskAPI } from "../pages/Tasklist";
+
+import { useSort } from "./hooks/useSort";
 
 
 export default function Tasks() {
@@ -34,18 +36,52 @@ export default function Tasks() {
     const getTasks = () => {
         return tasks;
     };
+   ///////////////////
+    // FILTER TASKS//
+    /////////////////
 
-    // FILTER TASKS
+    // RETURN COMPLETE TASKS
 
-    function CompletedTasks() {
-        // return completed tasks;
+    function CompletedTasks() {  
         return getTasks().filter((task) => task.completed === true);
     }
 
+    // RETURN INCOMPLETE TASKS
     function ActiveTasks() {
-        // return active tasks;
         return getTasks().filter((task) => task.completed === false);
     }
+
+    // RETURN ALL TASKS
+    function AllTasks() {
+        return getTasks();
+    }
+
+    // RETURN TASKS BY TASKLIST
+    function TaskListTasks(listName) {
+        return getTasks().filter((task) => task.taskList === listName);
+    }
+
+    // RETURN TASKS BY ASSIGNED TO
+    function AssignedToTasks(assignedTo) {
+        return getTasks().filter((task) => task.assigned_to === assignedTo);
+    }
+
+    // RETURN TASKS BY DUE DATE
+    function DueDateTasks(dueDate) {
+        return getTasks().filter((task) => task.due_date === dueDate);
+    }
+
+    // SORT TASKS BY DUE DATE IN DESCENDING ORDER
+    function MapDescendingDueDate() {
+        return getTasks().sort((a, b) => (a.due_date > b.due_date) ? 1 : -1)
+    }
+
+    // SORT TASKS BY DUE DATE IN ASCENDING ORDER
+    function MapAscendingDueDate() {
+        return getTasks().sort((a, b) => (a.due_date < b.due_date) ? 1 : -1)
+    }
+
+
 
     // UPDATE TASK
 
@@ -84,8 +120,8 @@ export default function Tasks() {
                         </ModalBody>
 
                         <ModalFooter>
-                            <Button colorScheme="blue" mr={3} onClick={onClose}>
-                                Close
+                            <Button variant="outline" mr={3} onClick={onClose}>
+                                Cancel
                             </Button>
                             <Button variant="ghost">Secondary Action</Button>
                         </ModalFooter>
@@ -97,9 +133,9 @@ export default function Tasks() {
 
 
 
-    ///////////
-    // FORMS///
-    ///////////
+    ////////////
+    // FORMS ///
+    ////////////
 
     // ADD TASK FORM
 
@@ -172,16 +208,18 @@ export default function Tasks() {
                             onChange={(e) => setAssigned_to(e.target.value)}
                         />
                     </FormControl>
-                    <Button
-                        variant='outline'
-                        type='submit'
-                        value={addTask}
-                    >
-                        Save
-                    </Button>
-
-                
+                    <FormControl>
+                        <Input
+                            type="checkbox" 
+                            placeholder="Completed"
+                            value={completed}
+                            onChange={(e) => setCompleted(e.currentTarget.checked)}
+                        />
+                    </FormControl>
+                    <Button type="submit" onClick={onSubmit} variant="solid" >Add Task</Button>
                 </FormControl>
+
+
             </Box>
         );
     }
@@ -293,6 +331,7 @@ export default function Tasks() {
                     <TabPanel>
                         <TaskTable tasks={ActiveTasks()} />
                     </TabPanel>
+
                     <TabPanel>
                         <TaskTable tasks={CompletedTasks()} />
                     </TabPanel>
@@ -301,93 +340,6 @@ export default function Tasks() {
         );
     }
 
-    function TaskTable({ tasks }) {
-        return (
-            <Table>
-                <Thead>
-                    <Tr>
-                        <Th></Th>
-                        <Th>Task</Th>
-                        <Th>Description</Th>
-                        <Th>
-                            <DropdownReorderButton
-
-                                label="Due Date"
-
-                            />
-                        </Th>
-                        <Th>Task List</Th>
-
-                    </Tr>
-                </Thead>
-                <Tbody>
-
-                    {tasks.map(task => (
-
-                        <Tr key={task.id}>
-                            <Td>
-                                <Checkbox isChecked={task.completed} />
-                            </Td>
-                            <Td>
-                                <Text fontWeight="bold">{task.taskName}</Text>
-                            </Td>
-                            <Td>
-                                <Text fontSize="sm" color="gray.300">{task.description}</Text>
-
-                            </Td>
-                            <Td>{task.due_date}</Td>
-                            <Td>{task.taskList}</Td>
-                        </Tr>
-
-                    ))}
-
-                </Tbody>
-                <Tr>
-                    <Td>
-
-                    </Td>
-                    <Td>
-                        <AddTaskModal />
-                    </Td>
-                    <Td>
-                        <Button variant='outline'>
-                            Edit List
-                        </Button>
-                    </Td>
-                    <Td>
-                        <Button variant='outline'>
-                            Delete List
-                        </Button>
-                    </Td>
-                </Tr>
-                <Tr>
-                    <Td>
-                        <Box>
-                            <Text fontSize="sm" color="gray.300">Showing {tasks.length} of {tasks.length} tasks</Text>
-                        </Box>
-                    </Td>
-                </Tr>
-
-
-            </Table>
-        );
-    }
-
-
-    return (
-        <Box>
-            <Container>
-                < TaskTab>
-                    < TaskTable />
-
-                </TaskTab>
-
-            </Container>
-
-
-        </Box>
-
-    )
 }
 
 
