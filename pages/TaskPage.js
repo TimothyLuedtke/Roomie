@@ -1,5 +1,4 @@
-import { TaskTable } from "../components/Tasks/TaskTable"
-import { TaskAPI } from "./Tasklist"
+import { TaskTable } from "../components/tasks/TaskTable"
 import { Box, Container } from "@chakra-ui/react";
 
 export default function TaskPage() {
@@ -8,7 +7,7 @@ export default function TaskPage() {
 return (
     <Box>
         <Container>
-                < TaskTable dataSet={TaskAPI} />
+                < TaskTable />
                 
         </Container>
     </Box>

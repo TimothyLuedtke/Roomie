@@ -1,4 +1,6 @@
-export let TaskAPI = [
+export const TaskAPI = [
+
+
     {
         id: 1,
         taskName: 'Task Item',
@@ -28,12 +30,3 @@ export let TaskAPI = [
     },
 ]
 
-// export a function that will map through the TaskAPI and order the objects by due_date in descending order
-export function MapDescendingDueDate() {
-    return TaskAPI.sort((a, b) => (a.due_date > b.due_date) ? 1 : -1)
-}
-
-// export a function that will map through the TaskAPI and order the objects by due_date in ascending order
-export function MapAscendingDueDate() {
-    return TaskAPI.sort((a, b) => (a.due_date < b.due_date) ? 1 : -1)
-}
