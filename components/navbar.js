@@ -1,8 +1,5 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
-// import Tasks for tasks tab
-import Tasks from './Tasks';
-
 export default function Navbar() {
     return (
         <Tabs variant="line" size="lg" align="center" >
@@ -22,7 +19,7 @@ export default function Navbar() {
                 </TabPanel>
 
                 <TabPanel>
-                    <Tasks />
+                    
                 </TabPanel>
 
                 <TabPanel>
