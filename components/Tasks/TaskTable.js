@@ -3,6 +3,7 @@ import { Box, Container, Text, Button, Table, Thead, Tr, Th, Checkbox, Tbody, Td
 import { TaskRow } from "./TaskRow";
 import { useCompleted } from "../hooks/useCompleted";
 import { FilterModal } from './filterModal';
+import { Accordion } from '@chakra-ui/react';
 
 
 
@@ -43,8 +44,10 @@ export const TaskTable = () => {
                                     />
                                 </Td>
                             </Tr>
+                            <Accordion allowMultiple>
                             <MapTasks 
                              />
+                             </Accordion>
                         </Tbody>
                     </Table>
                 </Box>
