@@ -1,4 +1,4 @@
-export const TaskAPI = [
+export const TaskData = [
 
 
     {
