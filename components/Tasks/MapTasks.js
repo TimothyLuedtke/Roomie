@@ -8,6 +8,7 @@ import {
     Checkbox,
     Flex,
     Text,
+    Spacer,
 } from "@chakra-ui/react";
 
 import { TaskData } from "../../pages/api/TaskData";
@@ -41,10 +42,11 @@ export const MapTasks = () => {
                     <h2>
                         <AccordionButton>
                             <Checkbox
+                            padding={2}
                                 isChecked={task.completed}
                                 onChange={HandleToggleCompleted}
                             />
-                            <Box flex="1" textAlign="left">
+                            <Box flex="1" textAlign="left" marginLeft={10}>
                                 <Text>{task.taskName}</Text>
                             </Box>
                             <AccordionIcon />
@@ -57,13 +59,17 @@ export const MapTasks = () => {
                             <Text>Assigned to: {task.assigned_to}</Text>
                             <Text>List: {task.listName}</Text>
                         </Flex>
-                        <Flex direction="row" justifyContent="space-between">
-                            <Button
+                        <Flex direction="row" justifyContent="right">
+                            <Button 
+                            marginX={1}
+                            variant='none'
                                 onClick={HandleDeleteTask}
                             >
                                 Edit
                             </Button>
-                            <Button
+                            <Button 
+                            marginX={.5}
+                            variant='none'
                                 onClick={HandleDeleteTask}
                             >
                                 Delete
