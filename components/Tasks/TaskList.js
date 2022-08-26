@@ -10,7 +10,6 @@ import {
 
 import { MapTasks } from "./MapTasks";
 
-import { AddTask } from "./AddTask";
 
 
 
@@ -23,13 +22,12 @@ export const TaskList = () => {
             <Flex direction="column">
                 <Flex direction="row" justifyContent="space-between">
                     <Text>Tasks</Text>
-                    <Button onClick={AddTask} variant="outline">Add Task</Button>
-                    
+
                 </Flex>
-        <Accordion allowMultiple>
-            <MapTasks
-            />
-        </Accordion>
+                <Accordion allowMultiple>
+                    <MapTasks
+                    />
+                </Accordion>
             </Flex>
         </Container>
 

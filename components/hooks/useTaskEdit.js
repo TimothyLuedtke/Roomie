@@ -4,17 +4,15 @@ import { useState } from 'react';
 export const AddTask = (taskList, newTask) => {
     const [addedTask, setAddedTask] = useState([]);
 
-    setAddedTask([...taskList, newTask]);
+    setAddedTask([taskList, newTask]), [newTask];
 
-    return addedTask;
 };
 
 export const useDeleteTask = (taskList, id) => {
     const [deletedTask, setDeletedTask] = useState([]);
 
-    setDeletedTask(taskList.filter((task) => task.id !== id));
+    setDeletedTask(taskList.filter((task) => task.id !== id)), [taskList, id];
 
-    return deletedTask;
 };
 
 
@@ -25,9 +23,8 @@ export const useToggleCompleted = (taskList, id) => {
         taskList.map((task) =>
             task.id === id ? { ...task, completed: !task.completed } : task
         )
-    );
+    ), [taskList, id];
 
-    return completedTask;
 };
 
 export const useEditTask = (taskList, id, newTask) => {
@@ -37,9 +34,8 @@ export const useEditTask = (taskList, id, newTask) => {
         taskList.map((task) =>
             task.id === id ? { ...task, newTask } : task
         )
-    );
+    ), [taskList, id, newTask];
 
-    return editedTask;
 };
 
 // export const useFilterTasks = (taskList, {index}, filter) => {
