@@ -111,7 +111,14 @@ export const TaskList = () => {
     const handleEdit = (id) => {
         const newTaskList = taskList.map((task) => {
             if (task.id === id) {
-                        return { ...task, taskName, description, due_date, assigned_to, listName };
+                return { ...task, 
+                    taskName: editTask.taskName,
+                    description: editTask.description,
+                    due_date: editTask.due_date,
+                    assigned_to: editTask.assigned_to,
+                    listName: editTask.listName,
+                    completed: editTask.completed
+                };
             }
             return task;
         });
