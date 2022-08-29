@@ -41,8 +41,6 @@ export const TaskList = () => {
     const [assigned_to, setAssigned_to] = useState("");
     const [listName, setListName] = useState("");
 
-    const { isOpen, onOpen, onClose } = useDisclosure();
-
     const toast = useToast();
 
     const handleComplete = (id) => {
@@ -55,6 +53,8 @@ export const TaskList = () => {
 
         setTaskList(newTaskList);
     };
+
+    const { isOpen: isOpenAddTask, onOpen: onOpenAddTask, onClose: onCloseAddTask } = useDisclosure();
 
     const handleAdd = (newtask) => {
         const newTaskList = [...taskList, newtask];
@@ -74,7 +74,7 @@ export const TaskList = () => {
 
         };
         handleAdd(newTask);
-        onClose();
+        onCloseAddTask();
         toast({
             title: "Task added.",
             description: "We've added your task to the list.",
@@ -99,15 +99,60 @@ export const TaskList = () => {
         setTaskList(newTaskList);
     };
 
+
+
+
+    // EDIT TASK MODAL
+
+    const { isOpen: isOpenEditTask, onOpen: onOpenEditTask, onClose: onCloseEditTask } = useDisclosure();
+
+    const [editTask, setEditTask] = useState(null);
+
     const handleEdit = (id) => {
         const newTaskList = taskList.map((task) => {
             if (task.id === id) {
-                return { ...task, taskName, description, due_date, assigned_to, listName };
+                        return { ...task, taskName, description, due_date, assigned_to, listName };
             }
             return task;
         });
+
         setTaskList(newTaskList);
     };
+
+    const handleEditSubmit = (e) => {
+        e.preventDefault();
+        const taskEdited = {
+            id: editTask.id,
+            taskName,
+            description,
+            due_date,
+            assigned_to,
+            listName,
+            completed: false,
+        };
+        handleEdit(taskEdited);
+        onCloseEditTask();
+        toast({
+            title: "Task edited.",
+            description: "We've edited your task.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+
+        resetForm();
+    };
+
+    const handleEditClick = (id) => {
+        const taskToEdit = taskList.find((task) => task.id === id);
+        setEditTask(taskToEdit);
+        onOpenEditTask();
+    };
+
+
+                
+
+
 
 
     return (
@@ -120,7 +165,7 @@ export const TaskList = () => {
                     </Text>
                     <Spacer />
                     <Box>
-                        <Button colorScheme="teal" onClick={onOpen}>
+                        <Button colorScheme="teal" onClick={onOpenAddTask}>
                             Add Task
                         </Button>
                     </Box>
@@ -160,6 +205,13 @@ export const TaskList = () => {
                                         >
                                             Delete
                                         </Button>
+                                        <Spacer />
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => handleEditClick(task.id)}
+                                        >
+                                            Edit
+                                        </Button>
 
                                     </Flex>
                                 </AccordionPanel>
@@ -168,10 +220,10 @@ export const TaskList = () => {
                         ))}
                     </Accordion>
                     <>
-                        <Modal isOpen={isOpen} onClose={onClose}>
+                        <Modal isOpen={isOpenAddTask} onClose={onCloseAddTask}>
                             <ModalOverlay />
                             <ModalContent>
-                                <ModalHeader>Add Task</ModalHeader>
+                                <ModalHeader></ModalHeader>
                                 <ModalCloseButton />
                                 <ModalBody>
                                     <Stack spacing={3}>
@@ -202,7 +254,47 @@ export const TaskList = () => {
                                     <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
                                         Add Task
                                     </Button>
-                                    <Button onClick={onClose}>Cancel</Button>
+                                    <Button onClick={onCloseAddTask}>Cancel</Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
+                    </>
+                    <>
+                        <Modal isOpen={isOpenEditTask} onClose={onCloseEditTask}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader></ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody>
+                                    <Stack spacing={3}>
+                                        <Input
+                                            placeholder={taskName !== "" ? taskName : "Task Name"}
+                                            onChange={(e) => setTaskName(e.target.value)}
+                                        />
+                                        <Input
+                                            placeholder={description !== "" ? description : "Description"}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                        />
+                                        <Input
+                                            placeholder={due_date !== "" ? due_date : "Due Date"}
+                                            onChange={(e) => setDue_date(e.target.value)}
+                                        />
+                                        <Input
+                                            placeholder={assigned_to !== "" ? assigned_to : "Assigned To"}
+                                            onChange={(e) => setAssigned_to(e.target.value)}
+                                        />
+                                        <Input
+                                            placeholder={listName !== "" ? listName : "List Name"}
+                                            onChange={(e) => setListName(e.target.value)}
+                                        />
+                                    </Stack>
+                                </ModalBody>
+
+                                <ModalFooter>
+                                    <Button colorScheme="blue" mr={3} onClick={handleEditSubmit}>
+                                        Edit Task
+                                    </Button>
+                                    <Button onClick={onCloseEditTask}>Cancel</Button>
                                 </ModalFooter>
                             </ModalContent>
                         </Modal>
