@@ -41,13 +41,9 @@ export const TaskList = () => {
     const [assigned_to, setAssigned_to] = useState("");
     const [listName, setListName] = useState("");
 
-
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-
-
     const toast = useToast();
-
 
     const handleComplete = (id) => {
         const newTaskList = taskList.map((task) => {
@@ -64,15 +60,6 @@ export const TaskList = () => {
         const newTaskList = [...taskList, newtask];
         setTaskList(newTaskList);
     };
-
-
-
-
-    const handleDelete = (id) => {
-        const newTaskList = taskList.filter((task) => task.id !== id);
-        setTaskList(newTaskList);
-    };
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -107,6 +94,20 @@ export const TaskList = () => {
         setListName("");
     };
 
+    const handleDelete = (id) => {
+        const newTaskList = taskList.filter((task) => task.id !== id);
+        setTaskList(newTaskList);
+    };
+
+    const handleEdit = (id) => {
+        const newTaskList = taskList.map((task) => {
+            if (task.id === id) {
+                return { ...task, taskName, description, due_date, assigned_to, listName };
+            }
+            return task;
+        });
+        setTaskList(newTaskList);
+    };
 
 
     return (
@@ -175,23 +176,23 @@ export const TaskList = () => {
                                 <ModalBody>
                                     <Stack spacing={3}>
                                         <Input
-                                            placeholder="Task Name"
+                                            placeholder={taskName !== "" ? taskName : "Task Name"}
                                             onChange={(e) => setTaskName(e.target.value)}
                                         />
                                         <Input
-                                            placeholder="Description"
+                                            placeholder={description !== "" ? description : "Description"}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
                                         <Input
-                                            placeholder="Due Date"
+                                            placeholder={due_date !== "" ? due_date : "Due Date"}
                                             onChange={(e) => setDue_date(e.target.value)}
                                         />
                                         <Input
-                                            placeholder="Assigned To"
+                                            placeholder={assigned_to !== "" ? assigned_to : "Assigned To"}
                                             onChange={(e) => setAssigned_to(e.target.value)}
                                         />
                                         <Input
-                                            placeholder="List Name"
+                                            placeholder={listName !== "" ? listName : "List Name"}
                                             onChange={(e) => setListName(e.target.value)}
                                         />
                                     </Stack>
