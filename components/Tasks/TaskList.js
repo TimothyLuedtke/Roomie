@@ -67,7 +67,7 @@ export const TaskList = () => {
 
     /////////////////////////////////////
 
-    //   ADD  NEW TASK   VIA MODAL   ////
+    //   ADD NEW TASK   VIA MODAL   ////
 
     /////////////////////////////////////
 
@@ -78,7 +78,7 @@ export const TaskList = () => {
         setTaskList(newTaskList);
     };
     
-    // HAND SUMBIT BUTTON FOR ADDING A NEW TASK TO TASKLIST////
+    // SUMBIT FOR ADDING NEW TASK
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -135,7 +135,7 @@ export const TaskList = () => {
 
     //////////////////////////////////////////
 
-    //   DELETING A TASK   VIA  MODAL    ////
+    //   DELETING TASK      VIA  MODAL    ////
 
     //////////////////////////////////////////
 
@@ -146,7 +146,7 @@ export const TaskList = () => {
         setTaskList(newTaskList);
     };
 
-    const handleDeleteConfirm = (e) => {
+    const handleDeleteTask = (e) => {
         handleDelete(e.id);
         onCloseDeleteTask();
         toast({
@@ -159,11 +159,9 @@ export const TaskList = () => {
     };
 
 
-
-
     //////////////////////////////
 
-    // EDIT A TASK VIA MODAL  ////
+    // EDIT TASK   VIA MODAL  ////
 
     //////////////////////////////
 
@@ -249,7 +247,7 @@ export const TaskList = () => {
                                     <Flex direction="row" justifyContent="right">
                                         <Button
                                             variant="outline"
-                                            onClick={onOpenDeleteTask}
+                                            onClick={onOpenDeleteTask(task)}
                                         >
                                             Delete
                                         </Button>
@@ -279,7 +277,7 @@ export const TaskList = () => {
                                     <Button colorScheme="blue" mr={3} onClick={onCloseDeleteTask}>
                                         Cancel
                                     </Button>
-                                    <Button colorScheme="red" onClick={handleDeleteConfirm}>
+                                    <Button colorScheme="red" onClick={handleDeleteTask}>
                                         Delete
                                     </Button>
                                 </ModalFooter>
