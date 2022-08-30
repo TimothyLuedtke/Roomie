@@ -34,6 +34,12 @@ import { nanoid } from "nanoid";
 
 export const TaskList = () => {
 
+    // SET UP TOAST FROM CHAKRA UI
+    const toast = useToast();
+
+
+    // STATE MANAGEMENT FOR TASKS////
+
     const [taskList, setTaskList] = useState(TaskData);
     const [taskName, setTaskName] = useState("");
     const [description, setDescription] = useState("");
@@ -41,7 +47,9 @@ export const TaskList = () => {
     const [assigned_to, setAssigned_to] = useState("");
     const [listName, setListName] = useState("");
 
-    const toast = useToast();
+    
+
+    // FUNCTION TO HANDLE CHECKBOX AND ALTER TASKLIST FOR COMPLETED TASK////
 
     const handleComplete = (id) => {
         const newTaskList = taskList.map((task) => {
@@ -54,6 +62,8 @@ export const TaskList = () => {
         setTaskList(newTaskList);
     };
 
+    // FUNCTION TO HANDLE ADDING A NEW TASK TO TASKLIST////
+
     const { isOpen: isOpenAddTask, onOpen: onOpenAddTask, onClose: onCloseAddTask } = useDisclosure();
 
     const handleAdd = (newtask) => {
@@ -61,6 +71,7 @@ export const TaskList = () => {
         setTaskList(newTaskList);
     };
 
+    // HAND SUMBIT BUTTON FOR ADDING A NEW TASK////
     const handleSubmit = (e) => {
         e.preventDefault();
         const newTask = {
@@ -86,6 +97,7 @@ export const TaskList = () => {
         resetForm();
     };
 
+    // FUNCTION TO RESET FORM VALUES////
     const resetForm = () => {
         setTaskName("");
         setDescription("");
@@ -94,6 +106,17 @@ export const TaskList = () => {
         setListName("");
     };
 
+    // FUNCTION TO SET FORM VALUES TO STATE////
+
+    const presetForm = (e) => {
+        setTaskName(e.taskName);
+        setDescription(e.description);
+        setDue_date(e.due_date);
+        setAssigned_to(e.assigned_to);
+        setListName(e.listName);
+    };
+
+    // FUNCTION TO HANDLE DELETING A TASK FROM TASKLIST////
     const handleDelete = (id) => {
         const newTaskList = taskList.filter((task) => task.id !== id);
         setTaskList(newTaskList);
@@ -102,59 +125,38 @@ export const TaskList = () => {
 
 
 
-    // EDIT TASK MODAL
+    // HANDLE EDITING A TASK FROM TASKLIST////
 
     const { isOpen: isOpenEditTask, onOpen: onOpenEditTask, onClose: onCloseEditTask } = useDisclosure();
 
     const [editTask, setEditTask] = useState(null);
 
-    const handleEdit = (id) => {
+    const handleEdit = (task) => {
+        setEditTask(task);
+        presetForm(task);
+        onOpenEditTask();
+    };
+    
+    const handleEditSubmit = (e) => {
+        e.preventDefault();
         const newTaskList = taskList.map((task) => {
-            if (task.id === id) {
-                return { ...task, 
-                    taskName: editTask.taskName,
-                    description: editTask.description,
-                    due_date: editTask.due_date,
-                    assigned_to: editTask.assigned_to,
-                    listName: editTask.listName,
-                    completed: editTask.completed
-                };
+            if (task.id === editTask.id) {
+                return { ...task, taskName, description, due_date, assigned_to, listName };
             }
             return task;
         });
-
         setTaskList(newTaskList);
-    };
-
-    const handleEditSubmit = (e) => {
-        e.preventDefault();
-        const taskEdited = {
-            id: editTask.id,
-            taskName,
-            description,
-            due_date,
-            assigned_to,
-            listName,
-            completed: false,
-        };
-        handleEdit(taskEdited);
         onCloseEditTask();
         toast({
-            title: "Task edited.",
-            description: "We've edited your task.",
+            title: "Task updated.",
+            description: "We've updated your task.",
             status: "success",
             duration: 9000,
             isClosable: true,
         });
-
         resetForm();
     };
 
-    const handleEditClick = (id) => {
-        const taskToEdit = taskList.find((task) => task.id === id);
-        setEditTask(taskToEdit);
-        onOpenEditTask();
-    };
 
 
                 
@@ -178,6 +180,7 @@ export const TaskList = () => {
                     </Box>
                 </Flex>
                 <Flex direction="column">
+
                     <Accordion allowMultiple>
 
                         {taskList.map((task) => (
@@ -215,7 +218,7 @@ export const TaskList = () => {
                                         <Spacer />
                                         <Button
                                             variant="outline"
-                                            onClick={() => handleEditClick(task.id)}
+                                            onClick={() => handleEdit(task)}
                                         >
                                             Edit
                                         </Button>

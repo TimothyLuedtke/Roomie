@@ -4,12 +4,10 @@ export default function Navbar() {
     return (
         <Tabs variant="line" size="lg" align="center" >
             <TabList mb="1em">
-                <Tab>Home</Tab>
-                <Tab>Tasks</Tab>
+                <Tab>Today</Tab>
                 <Tab>Calendar</Tab>
-                <Tab>Documents</Tab>
-                <Tab>Inbox</Tab>
-                <Tab>Profile</Tab>
+                <Tab>Complete</Tab>
+
             </TabList>
 
             <TabPanels>
@@ -19,23 +17,11 @@ export default function Navbar() {
                 </TabPanel>
 
                 <TabPanel>
-                    
+
                 </TabPanel>
 
                 <TabPanel>
-                    <p></p>
-                </TabPanel>
 
-                <TabPanel>
-                    <p></p>
-                </TabPanel>
-
-                <TabPanel>
-                    <p></p>
-                </TabPanel>
-
-                <TabPanel>
-                    <p></p>
                 </TabPanel>
 
             </TabPanels>
