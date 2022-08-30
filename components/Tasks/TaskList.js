@@ -47,9 +47,12 @@ export const TaskList = () => {
     const [assigned_to, setAssigned_to] = useState("");
     const [listName, setListName] = useState("");
 
-    
 
-    // FUNCTION TO HANDLE CHECKBOX AND ALTER TASKLIST FOR COMPLETED TASK////
+    ////////////////////////////////
+
+    //  CHECK COMPLETED CHECKBOX ///
+
+    ////////////////////////////////
 
     const handleComplete = (id) => {
         const newTaskList = taskList.map((task) => {
@@ -62,7 +65,11 @@ export const TaskList = () => {
         setTaskList(newTaskList);
     };
 
-    // FUNCTION TO HANDLE ADDING A NEW TASK TO TASKLIST////
+    /////////////////////////////////////
+
+    //   ADD  NEW TASK   VIA MODAL   ////
+
+    /////////////////////////////////////
 
     const { isOpen: isOpenAddTask, onOpen: onOpenAddTask, onClose: onCloseAddTask } = useDisclosure();
 
@@ -70,8 +77,9 @@ export const TaskList = () => {
         const newTaskList = [...taskList, newtask];
         setTaskList(newTaskList);
     };
-
-    // HAND SUMBIT BUTTON FOR ADDING A NEW TASK////
+    
+    // HAND SUMBIT BUTTON FOR ADDING A NEW TASK TO TASKLIST////
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         const newTask = {
@@ -97,7 +105,12 @@ export const TaskList = () => {
         resetForm();
     };
 
-    // FUNCTION TO RESET FORM VALUES////
+    ////////////////////////////////////////
+
+    //        RESET FORM VALUES         ////
+
+    ////////////////////////////////////////
+
     const resetForm = () => {
         setTaskName("");
         setDescription("");
@@ -106,7 +119,11 @@ export const TaskList = () => {
         setListName("");
     };
 
-    // FUNCTION TO SET FORM VALUES TO STATE////
+    ////////////////////////////////////////
+
+    //          SET FORM VALUES        ////
+
+    ///////////////////////////////////////
 
     const presetForm = (e) => {
         setTaskName(e.taskName);
@@ -116,16 +133,39 @@ export const TaskList = () => {
         setListName(e.listName);
     };
 
-    // FUNCTION TO HANDLE DELETING A TASK FROM TASKLIST////
+    //////////////////////////////////////////
+
+    //   DELETING A TASK   VIA  MODAL    ////
+
+    //////////////////////////////////////////
+
+    const { isOpen: isOpenDeleteTask, onOpen: onOpenDeleteTask, onClose: onCloseDeleteTask } = useDisclosure();
+
     const handleDelete = (id) => {
         const newTaskList = taskList.filter((task) => task.id !== id);
         setTaskList(newTaskList);
     };
 
+    const handleDeleteConfirm = (e) => {
+        handleDelete(e.id);
+        onCloseDeleteTask();
+        toast({
+            title: "Task deleted.",
+            description: "We've deleted your task from the list.",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+        });
+    };
 
 
 
-    // HANDLE EDITING A TASK FROM TASKLIST////
+
+    //////////////////////////////
+
+    // EDIT A TASK VIA MODAL  ////
+
+    //////////////////////////////
 
     const { isOpen: isOpenEditTask, onOpen: onOpenEditTask, onClose: onCloseEditTask } = useDisclosure();
 
@@ -136,7 +176,7 @@ export const TaskList = () => {
         presetForm(task);
         onOpenEditTask();
     };
-    
+
     const handleEditSubmit = (e) => {
         e.preventDefault();
         const newTaskList = taskList.map((task) => {
@@ -158,8 +198,6 @@ export const TaskList = () => {
     };
 
 
-
-                
 
 
 
@@ -211,7 +249,7 @@ export const TaskList = () => {
                                     <Flex direction="row" justifyContent="right">
                                         <Button
                                             variant="outline"
-                                            onClick={() => handleDelete(task.id)}
+                                            onClick={onOpenDeleteTask}
                                         >
                                             Delete
                                         </Button>
@@ -229,6 +267,26 @@ export const TaskList = () => {
 
                         ))}
                     </Accordion>
+                    <>
+                        <Modal isOpen={isOpenDeleteTask} onClose={onCloseDeleteTask}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalBody>
+                                    <Text>Delete this task?</Text>
+                                </ModalBody>
+
+                                <ModalFooter>
+                                    <Button colorScheme="blue" mr={3} onClick={onCloseDeleteTask}>
+                                        Cancel
+                                    </Button>
+                                    <Button colorScheme="red" onClick={handleDeleteConfirm}>
+                                        Delete
+                                    </Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
+                    </>
+
                     <>
                         <Modal isOpen={isOpenAddTask} onClose={onCloseAddTask}>
                             <ModalOverlay />
