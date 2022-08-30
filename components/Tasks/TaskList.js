@@ -234,7 +234,6 @@ export const TaskList = () => {
                             <ModalOverlay />
                             <ModalContent>
                                 <ModalHeader></ModalHeader>
-                                <ModalCloseButton />
                                 <ModalBody>
                                     <Stack spacing={3}>
                                         <Input
@@ -274,7 +273,6 @@ export const TaskList = () => {
                             <ModalOverlay />
                             <ModalContent>
                                 <ModalHeader></ModalHeader>
-                                <ModalCloseButton />
                                 <ModalBody>
                                     <Stack spacing={3}>
                                         <Input
