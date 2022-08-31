@@ -37,8 +37,11 @@ export const TaskList = () => {
     // SET UP TOAST FROM CHAKRA UI
     const toast = useToast();
 
+    ///////////////////////////////////
 
     // STATE MANAGEMENT FOR TASKLIST////
+
+    ///////////////////////////////////
 
     const [taskList, setTaskList] = useState(TaskData);
     const [taskName, setTaskName] = useState("");
@@ -46,6 +49,36 @@ export const TaskList = () => {
     const [due_date, setDue_date] = useState("");
     const [assigned_to, setAssigned_to] = useState("");
     const [listName, setListName] = useState("");
+
+
+    ////////////////////////////////////////
+
+    //        RESET FORM VALUES         ////
+
+    ////////////////////////////////////////
+
+    const resetForm = () => {
+        setTaskName("");
+        setDescription("");
+        setDue_date("");
+        setAssigned_to("");
+        setListName("");
+    };
+
+    ////////////////////////////////////////
+
+    //          SET FORM VALUES        ////
+
+    ///////////////////////////////////////
+
+    const presetForm = (e) => {
+        setTaskName(e.taskName);
+        setDescription(e.description);
+        setDue_date(e.due_date);
+        setAssigned_to(e.assigned_to);
+        setListName(e.listName);
+    };
+
 
 
     ////////////////////////////////
@@ -110,34 +143,6 @@ export const TaskList = () => {
         resetForm();
     };
 
-    ////////////////////////////////////////
-
-    //        RESET FORM VALUES         ////
-
-    ////////////////////////////////////////
-
-    const resetForm = () => {
-        setTaskName("");
-        setDescription("");
-        setDue_date("");
-        setAssigned_to("");
-        setListName("");
-    };
-
-    ////////////////////////////////////////
-
-    //          SET FORM VALUES        ////
-
-    ///////////////////////////////////////
-
-    const presetForm = (e) => {
-        setTaskName(e.taskName);
-        setDescription(e.description);
-        setDue_date(e.due_date);
-        setAssigned_to(e.assigned_to);
-        setListName(e.listName);
-    };
-
     ////////////////////////////////////////////
 
     //   DELETING TASK    VIA MODAL   ///
@@ -146,9 +151,10 @@ export const TaskList = () => {
 
     // SET UP VALUE FOR DELETE MODAL
 
-    const [deleteTask, setDeleteTask] = useState({});
     const { isOpen: isOpenDeleteTask, onOpen: onOpenDeleteTask, onClose: onCloseDeleteTask } = useDisclosure();
-
+    
+    const [deleteTask, setDeleteTask] = useState({});
+    
     const handleOpenDeleteTask = (e) => {
         setDeleteTask(e);
         onOpenDeleteTask();
@@ -284,7 +290,7 @@ export const TaskList = () => {
                             <ModalOverlay />
                             <ModalContent width="fit-content">
                                 <ModalFooter>
-                                    <Button colorScheme="red" variant="outline" margin="1rem" onClick={() => handleDeleteSubmit}>
+                                    <Button colorScheme="red" variant="outline" margin="1rem" onClick={handleDeleteSubmit}>
                                         Delete
                                     </Button>
                                     <Button variant="outline" margin="1rem" onClick={onCloseDeleteTask}>
