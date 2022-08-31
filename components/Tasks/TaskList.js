@@ -38,7 +38,7 @@ export const TaskList = () => {
     const toast = useToast();
 
 
-    // STATE MANAGEMENT FOR TASKS////
+    // STATE MANAGEMENT FOR TASKLIST////
 
     const [taskList, setTaskList] = useState(TaskData);
     const [taskName, setTaskName] = useState("");
@@ -73,13 +73,18 @@ export const TaskList = () => {
 
     const { isOpen: isOpenAddTask, onOpen: onOpenAddTask, onClose: onCloseAddTask } = useDisclosure();
 
+    const handleOpenAddTask = () => {
+        resetForm();
+        onOpenAddTask();
+    };
+
     const handleAdd = (newtask) => {
         const newTaskList = [...taskList, newtask];
         setTaskList(newTaskList);
     };
-    
+
     // SUMBIT FOR ADDING NEW TASK
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const newTask = {
@@ -159,6 +164,10 @@ export const TaskList = () => {
     };
 
 
+
+
+
+
     //////////////////////////////
 
     // EDIT TASK   VIA MODAL  ////
@@ -184,6 +193,7 @@ export const TaskList = () => {
             return task;
         });
         setTaskList(newTaskList);
+        resetForm();
         onCloseEditTask();
         toast({
             title: "Task updated.",
@@ -192,7 +202,6 @@ export const TaskList = () => {
             duration: 9000,
             isClosable: true,
         });
-        resetForm();
     };
 
 
@@ -204,17 +213,15 @@ export const TaskList = () => {
         <>
             <Container>
                 <Flex>
-
                     <Text fontSize="4xl" fontWeight="bold">
                         Tasks
                     </Text>
                     <Spacer />
-                    <Box>
-                        <Button colorScheme="teal" onClick={onOpenAddTask}>
-                            Add Task
-                        </Button>
-                    </Box>
+                    <Button colorScheme="teal" variant="outline" onClick={handleOpenAddTask}>
+                        Add
+                    </Button>
                 </Flex>
+
                 <Flex direction="column">
 
                     <Accordion allowMultiple>
@@ -232,7 +239,7 @@ export const TaskList = () => {
 
                                         />
                                         <Box flex="1" textAlign="left" marginLeft={10}>
-                                            <Text>{task.taskName}</Text>
+                                            <Text fontSize="xl">{task.taskName}</Text>
                                         </Box>
                                         <AccordionIcon />
                                     </AccordionButton>
@@ -247,7 +254,7 @@ export const TaskList = () => {
                                     <Flex direction="row" justifyContent="right">
                                         <Button
                                             variant="outline"
-                                            onClick={onOpenDeleteTask(task)}
+                                            onClick={() => onOpenDeleteTask(task.id)}
                                         >
                                             Delete
                                         </Button>
@@ -266,21 +273,18 @@ export const TaskList = () => {
                         ))}
                     </Accordion>
                     <>
-                        <Modal isOpen={isOpenDeleteTask} onClose={onCloseDeleteTask}>
+                        <Modal isOpen={isOpenDeleteTask} onClose={onCloseDeleteTask} isCentered>
                             <ModalOverlay />
-                            <ModalContent>
-                                <ModalBody>
-                                    <Text>Delete this task?</Text>
-                                </ModalBody>
-
+                            <ModalContent width="fit-content">
                                 <ModalFooter>
-                                    <Button colorScheme="blue" mr={3} onClick={onCloseDeleteTask}>
-                                        Cancel
-                                    </Button>
-                                    <Button colorScheme="red" onClick={handleDeleteTask}>
+                                    <Button colorScheme="red" variant="outline" margin="1rem" onClick={() => handleDeleteTask(task)}>
                                         Delete
                                     </Button>
+                                    <Button variant="outline" margin="1rem" onClick={onCloseDeleteTask}>
+                                        Cancel
+                                    </Button>
                                 </ModalFooter>
+
                             </ModalContent>
                         </Modal>
                     </>
@@ -293,15 +297,15 @@ export const TaskList = () => {
                                 <ModalBody>
                                     <Stack spacing={3}>
                                         <Input
-                                            placeholder={taskName !== "" ? taskName : "Task Name"}
+                                            placeholder="Task Name"
                                             onChange={(e) => setTaskName(e.target.value)}
                                         />
                                         <Input
-                                            placeholder={description !== "" ? description : "Description"}
+                                            placeholder="Description"
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
                                         <Input
-                                            placeholder={due_date !== "" ? due_date : "Due Date"}
+                                            placeholder="Due Date"
                                             onChange={(e) => setDue_date(e.target.value)}
                                         />
                                         <Input
@@ -316,16 +320,16 @@ export const TaskList = () => {
                                 </ModalBody>
 
                                 <ModalFooter>
-                                    <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+                                    <Button colorScheme="blue" variant="outline" mr={3} onClick={handleSubmit}>
                                         Add Task
                                     </Button>
-                                    <Button onClick={onCloseAddTask}>Cancel</Button>
+                                    <Button variant="outline" onClick={onCloseAddTask}>Cancel</Button>
                                 </ModalFooter>
                             </ModalContent>
                         </Modal>
                     </>
                     <>
-                        <Modal isOpen={isOpenEditTask} onClose={onCloseEditTask}>
+                        <Modal isOpen={isOpenEditTask} onClose={onCloseEditTask} >
                             <ModalOverlay />
                             <ModalContent>
                                 <ModalHeader></ModalHeader>
@@ -355,10 +359,10 @@ export const TaskList = () => {
                                 </ModalBody>
 
                                 <ModalFooter>
-                                    <Button colorScheme="blue" mr={3} onClick={handleEditSubmit}>
+                                    <Button colorScheme="blue" variant="outline" mr={3} onClick={handleEditSubmit}>
                                         Edit Task
                                     </Button>
-                                    <Button onClick={onCloseEditTask}>Cancel</Button>
+                                    <Button variant="outline" onClick={onCloseEditTask}>Cancel</Button>
                                 </ModalFooter>
                             </ModalContent>
                         </Modal>
