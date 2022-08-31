@@ -138,21 +138,34 @@ export const TaskList = () => {
         setListName(e.listName);
     };
 
-    //////////////////////////////////////////
+    ////////////////////////////////////////////
 
-    //   DELETING TASK      VIA  MODAL    ////
+    //   DELETING TASK    VIA MODAL   ///
 
-    //////////////////////////////////////////
+    ////////////////////////////////////////////
 
+    // SET UP VALUE FOR DELETE MODAL
+
+    const [deleteTask, setDeleteTask] = useState({});
     const { isOpen: isOpenDeleteTask, onOpen: onOpenDeleteTask, onClose: onCloseDeleteTask } = useDisclosure();
+
+    const handleOpenDeleteTask = (e) => {
+        setDeleteTask(e);
+        onOpenDeleteTask();
+    };
+
+    // DELETE TASK
 
     const handleDelete = (id) => {
         const newTaskList = taskList.filter((task) => task.id !== id);
         setTaskList(newTaskList);
     };
 
-    const handleDeleteTask = (e) => {
-        handleDelete(e.id);
+    // SUBMIT FOR DELETING TASK
+
+    const handleDeleteSubmit = (e) => {
+        e.preventDefault();
+        handleDelete(deleteTask.id);
         onCloseDeleteTask();
         toast({
             title: "Task deleted.",
@@ -162,11 +175,6 @@ export const TaskList = () => {
             isClosable: true,
         });
     };
-
-
-
-
-
 
     //////////////////////////////
 
@@ -254,16 +262,15 @@ export const TaskList = () => {
                                     <Flex direction="row" justifyContent="right">
                                         <Button
                                             variant="outline"
-                                            onClick={() => onOpenDeleteTask(task.id)}
-                                        >
-                                            Delete
-                                        </Button>
-                                        <Spacer />
-                                        <Button
-                                            variant="outline"
                                             onClick={() => handleEdit(task)}
                                         >
                                             Edit
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => handleOpenDeleteTask(task)}
+                                        >
+                                            Delete
                                         </Button>
 
                                     </Flex>
@@ -277,7 +284,7 @@ export const TaskList = () => {
                             <ModalOverlay />
                             <ModalContent width="fit-content">
                                 <ModalFooter>
-                                    <Button colorScheme="red" variant="outline" margin="1rem" onClick={() => handleDeleteTask(task)}>
+                                    <Button colorScheme="red" variant="outline" margin="1rem" onClick={() => handleDeleteSubmit}>
                                         Delete
                                     </Button>
                                     <Button variant="outline" margin="1rem" onClick={onCloseDeleteTask}>
