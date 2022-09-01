@@ -11,6 +11,8 @@ import {
     AccordionPanel,
     AccordionIcon,
     Checkbox,
+    CheckboxGroup,
+    ChevronDownIcon,
     Spacer,
     Modal,
     ModalOverlay,
@@ -18,11 +20,17 @@ import {
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
     Stack,
     Input,
+    VStack,
+    useCheckboxGroup,
     useDisclosure,
-    useToast
+    useToast,
+    ChakraProvider
 } from "@chakra-ui/react";
 
 import { TaskData } from "../../pages/api/taskData";
@@ -31,18 +39,21 @@ import { useState } from "react";
 
 import { nanoid } from "nanoid";
 
+import { ListNameCheckboxGroup,  } from "./FilterTaskList"
+
 
 export const TaskList = () => {
 
     // SET UP TOAST FROM CHAKRA UI
     const toast = useToast();
 
-    ///////////////////////////////////
+    /////////////////////////////////////
 
-    // STATE MANAGEMENT FOR TASKLIST////
+    /// STATE MANAGEMENT FOR TASKLIST ///
 
-    ///////////////////////////////////
+    /////////////////////////////////////
 
+    const [listDislay, setListDisplay] = useState(TaskData);
     const [taskList, setTaskList] = useState(TaskData);
     const [taskName, setTaskName] = useState("");
     const [description, setDescription] = useState("");
@@ -78,8 +89,6 @@ export const TaskList = () => {
         setAssigned_to(e.assigned_to);
         setListName(e.listName);
     };
-
-
 
     ////////////////////////////////
 
@@ -152,9 +161,9 @@ export const TaskList = () => {
     // SET UP VALUE FOR DELETE MODAL
 
     const { isOpen: isOpenDeleteTask, onOpen: onOpenDeleteTask, onClose: onCloseDeleteTask } = useDisclosure();
-    
+
     const [deleteTask, setDeleteTask] = useState({});
-    
+
     const handleOpenDeleteTask = (e) => {
         setDeleteTask(e);
         onOpenDeleteTask();
@@ -227,20 +236,21 @@ export const TaskList = () => {
         <>
             <Container>
                 <Flex>
-                    <Text fontSize="4xl" fontWeight="bold">
-                        Tasks
-                    </Text>
+                    <Button onClick={handleOpenListNamesFilterer}>
+                        Filter
+                    </Button>
                     <Spacer />
                     <Button colorScheme="teal" variant="outline" onClick={handleOpenAddTask}>
-                        Add
+                        Add Task
                     </Button>
+
                 </Flex>
 
                 <Flex direction="column">
 
                     <Accordion allowMultiple>
 
-                        {taskList.map((task) => (
+                        {listDislay.map((task) => (
                             <AccordionItem key={task.id}>
                                 <h2>
                                     <AccordionButton>
@@ -379,8 +389,23 @@ export const TaskList = () => {
                                 </ModalFooter>
                             </ModalContent>
                         </Modal>
-                    </>
+                        <Modal isOpen={isOpenListNames} onClose={onCloseListNames} >
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader></ModalHeader>
+                                <ModalBody>
+                                    <ListNameCheckboxGroup />
+                                </ModalBody>
 
+                                <ModalFooter>
+                                    <Button colorScheme="blue" variant="outline" mr={3} onClick={handleListNamesSubmit}>
+                                        Edit Task
+                                    </Button>
+                                    <Button variant="outline" onClick={onCloseListNames}>Cancel</Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
+                    </>
                 </Flex>
             </Container>
         </>

@@ -1,7 +1,15 @@
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { Tabs,
+     TabList,
+    TabPanels, 
+    Tab, 
+    TabPanel,
+
+    } from "@chakra-ui/react";
 
 export default function Navbar() {
+
     return (
+
         <Tabs variant="line" size="lg" align="center" >
             <TabList mb="1em">
                 <Tab>Today</Tab>
@@ -26,5 +34,7 @@ export default function Navbar() {
 
             </TabPanels>
         </Tabs>
+
+
     );
 }
