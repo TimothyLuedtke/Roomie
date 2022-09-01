@@ -20,14 +20,14 @@ export function FilterTaskList() {
 
     return (
         <>
-            <Button onClick={handleOpenListNamesFilterer}>Filter Lists</Button>
+            <Button onClick={HandleOpenListNamesFilterer}>Filter Lists</Button>
             <Modal isOpen={isOpenListNames} onClose={onCloseListNames}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Filter Lists</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <form onSubmit={handleListNamesSubmit}>
+                        <form onSubmit={HandleListNamesSubmit}>
                             <ListNameCheckboxGroup />
                             <Button type="submit">Filter</Button>
                         </form>
