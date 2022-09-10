@@ -22,7 +22,8 @@ import {
     Stack,
     Input,
     useDisclosure,
-    useToast
+    useToast,
+    IconButton
 } from "@chakra-ui/react";
 
 import { TaskData } from "../../pages/api/taskData";
@@ -31,10 +32,12 @@ import { useState } from "react";
 
 import { nanoid } from "nanoid";
 
+import TaskBar from "./taskBar";
+
+import { InfoOutlineIcon } from "@chakra-ui/icons";
+
 
 const TaskList = () => {
-
-
 
     // SET UP TOAST FROM CHAKRA UI
     const toast = useToast();
@@ -154,9 +157,9 @@ const TaskList = () => {
     // SET UP VALUE FOR DELETE MODAL
 
     const { isOpen: isOpenDeleteTask, onOpen: onOpenDeleteTask, onClose: onCloseDeleteTask } = useDisclosure();
-    
+
     const [deleteTask, setDeleteTask] = useState({});
-    
+
     const handleOpenDeleteTask = (e) => {
         setDeleteTask(e);
         onOpenDeleteTask();
@@ -226,166 +229,138 @@ const TaskList = () => {
 
 
     return (
-        <>
-            
-                <Flex>
-                    <Text fontSize="4xl" fontWeight="bold">
-                        Tasks
-                    </Text>
-                    <Spacer />
-                    <Button colorScheme="teal" variant="outline" onClick={handleOpenAddTask}>
-                        Add
-                    </Button>
-                </Flex>
+        <Container maxW="container.md" padding='0'>
 
-                <Flex direction="column">
+            <TaskBar handleOpenAddTask={handleOpenAddTask} />
 
-                    <Accordion allowMultiple>
-
-                        {taskList.map((task) => (
-                            <AccordionItem key={task.id}>
-                                <h2>
-                                    <AccordionButton>
-                                        <Checkbox
-                                            padding={2}
-                                            isChecked={task.completed}
-                                            onChange={() => handleComplete(task.id)}
-                                            id={task.id}
+            <Flex direction="column">
 
 
-                                        />
-                                        <Box flex="1" textAlign="left" marginLeft={10}>
-                                            <Text fontSize="xl">{task.taskName}</Text>
-                                        </Box>
-                                        <AccordionIcon />
-                                    </AccordionButton>
-                                </h2>
-                                <AccordionPanel pb={4}>
-                                    <Flex direction="column">
-                                        <Text>Description: {task.description}</Text>
-                                        <Text>Due: {task.due_date}</Text>
-                                        <Text>Assigned to: {task.assigned_to}</Text>
-                                        <Text>List: {task.listName}</Text>
-                                    </Flex>
-                                    <Flex direction="row" justifyContent="right">
-                                        <Button
-                                            variant="outline"
-                                            onClick={() => handleEdit(task)}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            onClick={() => handleOpenDeleteTask(task)}
-                                        >
-                                            Delete
-                                        </Button>
+                {taskList.map((task) => (
+                        <Flex key={task.id} direction="row" padding='0' margin='0'> 
+                            
+                            <Flex direction="row" padding='0' margin='0' width='100%'>
+                                
+                                <Box>
+                                    <Text padding='0' margin='0'>
+                                        {task.taskName}
+                                    </Text>
+                                </Box>
+                                <Box>
+                                    <Text padding='0' margin='0'>
+                                        {task.due_date}
+                                    </Text>
+                                </Box>
+                            </Flex>
 
-                                    </Flex>
-                                </AccordionPanel>
-                            </AccordionItem>
+                            <IconButton 
+                                aria-label="Open Task Details"
+                                icon={<InfoOutlineIcon />}
+                                variant="ghost"
+                            onClick={() => openTaskDetailsModal(task.id)}
+                            />
+                        </Flex>
+                ))}
 
-                        ))}
-                    </Accordion>
-                    <>
-                        <Modal isOpen={isOpenDeleteTask} onClose={onCloseDeleteTask} isCentered>
-                            <ModalOverlay />
-                            <ModalContent width="fit-content">
-                                <ModalFooter>
-                                    <Button colorScheme="red" variant="outline" margin="1rem" onClick={handleDeleteSubmit}>
-                                        Delete
-                                    </Button>
-                                    <Button variant="outline" margin="1rem" onClick={onCloseDeleteTask}>
-                                        Cancel
-                                    </Button>
-                                </ModalFooter>
 
-                            </ModalContent>
-                        </Modal>
-                    </>
+                <>
+                    <Modal isOpen={isOpenDeleteTask} onClose={onCloseDeleteTask} isCentered>
+                        <ModalOverlay />
+                        <ModalContent width="fit-content">
+                            <ModalFooter>
+                                <Button colorScheme="red" variant="outline" margin="1rem" onClick={handleDeleteSubmit}>
+                                    Delete
+                                </Button>
+                                <Button variant="outline" margin="1rem" onClick={onCloseDeleteTask}>
+                                    Cancel
+                                </Button>
+                            </ModalFooter>
 
-                    <>
-                        <Modal isOpen={isOpenAddTask} onClose={onCloseAddTask}>
-                            <ModalOverlay />
-                            <ModalContent>
-                                <ModalHeader></ModalHeader>
-                                <ModalBody>
-                                    <Stack spacing={3}>
-                                        <Input
-                                            placeholder="Task Name"
-                                            onChange={(e) => setTaskName(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder="Description"
-                                            onChange={(e) => setDescription(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder="Due Date"
-                                            onChange={(e) => setDue_date(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder={assigned_to !== "" ? assigned_to : "Assigned To"}
-                                            onChange={(e) => setAssigned_to(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder={listName !== "" ? listName : "List Name"}
-                                            onChange={(e) => setListName(e.target.value)}
-                                        />
-                                    </Stack>
-                                </ModalBody>
+                        </ModalContent>
+                    </Modal>
+                </>
 
-                                <ModalFooter>
-                                    <Button colorScheme="blue" variant="outline" mr={3} onClick={handleSubmit}>
-                                        Add Task
-                                    </Button>
-                                    <Button variant="outline" onClick={onCloseAddTask}>Cancel</Button>
-                                </ModalFooter>
-                            </ModalContent>
-                        </Modal>
-                    </>
-                    <>
-                        <Modal isOpen={isOpenEditTask} onClose={onCloseEditTask} >
-                            <ModalOverlay />
-                            <ModalContent>
-                                <ModalHeader></ModalHeader>
-                                <ModalBody>
-                                    <Stack spacing={3}>
-                                        <Input
-                                            placeholder={taskName !== "" ? taskName : "Task Name"}
-                                            onChange={(e) => setTaskName(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder={description !== "" ? description : "Description"}
-                                            onChange={(e) => setDescription(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder={due_date !== "" ? due_date : "Due Date"}
-                                            onChange={(e) => setDue_date(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder={assigned_to !== "" ? assigned_to : "Assigned To"}
-                                            onChange={(e) => setAssigned_to(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder={listName !== "" ? listName : "List Name"}
-                                            onChange={(e) => setListName(e.target.value)}
-                                        />
-                                    </Stack>
-                                </ModalBody>
+                <>
+                    <Modal isOpen={isOpenAddTask} onClose={onCloseAddTask}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader></ModalHeader>
+                            <ModalBody>
+                                <Stack spacing={3}>
+                                    <Input
+                                        placeholder="Task Name"
+                                        onChange={(e) => setTaskName(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder="Description"
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder="Due Date"
+                                        onChange={(e) => setDue_date(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder={assigned_to !== "" ? assigned_to : "Assigned To"}
+                                        onChange={(e) => setAssigned_to(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder={listName !== "" ? listName : "List Name"}
+                                        onChange={(e) => setListName(e.target.value)}
+                                    />
+                                </Stack>
+                            </ModalBody>
 
-                                <ModalFooter>
-                                    <Button colorScheme="blue" variant="outline" mr={3} onClick={handleEditSubmit}>
-                                        Edit Task
-                                    </Button>
-                                    <Button variant="outline" onClick={onCloseEditTask}>Cancel</Button>
-                                </ModalFooter>
-                            </ModalContent>
-                        </Modal>
-                    </>
+                            <ModalFooter>
+                                <Button colorScheme="blue" variant="outline" mr={3} onClick={handleSubmit}>
+                                    Add Task
+                                </Button>
+                                <Button variant="outline" onClick={onCloseAddTask}>Cancel</Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
+                </>
+                <>
+                    <Modal isOpen={isOpenEditTask} onClose={onCloseEditTask} >
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader></ModalHeader>
+                            <ModalBody>
+                                <Stack spacing={3}>
+                                    <Input
+                                        placeholder={taskName !== "" ? taskName : "Task Name"}
+                                        onChange={(e) => setTaskName(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder={description !== "" ? description : "Description"}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder={due_date !== "" ? due_date : "Due Date"}
+                                        onChange={(e) => setDue_date(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder={assigned_to !== "" ? assigned_to : "Assigned To"}
+                                        onChange={(e) => setAssigned_to(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder={listName !== "" ? listName : "List Name"}
+                                        onChange={(e) => setListName(e.target.value)}
+                                    />
+                                </Stack>
+                            </ModalBody>
 
-                </Flex>
-            
-        </>
+                            <ModalFooter>
+                                <Button colorScheme="blue" variant="outline" mr={3} onClick={handleEditSubmit}>
+                                    Edit Task
+                                </Button>
+                                <Button variant="outline" onClick={onCloseEditTask}>Cancel</Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
+                </>
+
+            </Flex>
+        </Container>
     );
 };
 

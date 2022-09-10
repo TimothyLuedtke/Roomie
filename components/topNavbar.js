@@ -31,7 +31,7 @@ export default function TopNavbar() {
             paddingTop={isMobile ? "1em" : "0.5em"}
             bg="gray.800"
             color="white"
-            position="fixed"
+            position="sticky"
             top="0"
             width="100%"
         >

@@ -11,8 +11,7 @@ export default function TaskPage() {
     return (
         <>
             <Head />
-            <TopNavbar />
-            
+            <TopNavbar />            
             <TaskList />
             <BottomNavbar />
         </>
