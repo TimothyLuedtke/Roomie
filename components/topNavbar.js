@@ -2,13 +2,25 @@
 // the navbar is fixed to the top of the page
 // the navbar is responsive to the screen size
 
+// set icon button to be underlined when the page is active
+
 import { Flex, IconButton, Input, InputGroup, InputLeftElement, useBreakpointValue } from "@chakra-ui/react";
 import { FaSearch, FaHome, FaCalendarAlt, FaCheck, FaPlus, FaUser } from "react-icons/fa";
 import { useRouter } from "next/router";
+import { extendTheme } from "@chakra-ui/react"
 
-export default function Navbar() {
+
+export default function TopNavbar() {
     const router = useRouter();
     const isMobile = useBreakpointValue({ base: true, md: false });
+
+    const theme = extendTheme({
+        layerStyles: {
+          selected: {
+            borderBottom: "2px solid #38B2AC",
+          },
+        },
+      })
 
     return (
         <Flex
@@ -30,6 +42,7 @@ export default function Navbar() {
                     size="lg"
                     variant="ghost"
                     onClick={() => router.push("/")}
+                    layerStyle = {router.pathname === "/" ? "selected" : ""}                   
                 />
                 <IconButton
                     aria-label="Calendar"
@@ -37,13 +50,15 @@ export default function Navbar() {
                     size="lg"
                     variant="ghost"
                     onClick={() => router.push("/calendar")}
+                    layerStyle = {router.pathname === "/calendar" ? "selected" : ""}
                 />
                 <IconButton
-                    aria-label="Complete"
+                    aria-label="TaskPage"
                     icon={<FaCheck />}
                     size="lg"
                     variant="ghost"
-                    onClick={() => router.push("/complete")}
+                    onClick={() => router.push("/TaskPage")}
+                    layerStyle = {router.pathname === "/TaskPage" ? "selected" : ""}
                 />
             </Flex>
 
@@ -55,6 +70,7 @@ export default function Navbar() {
                         size="lg"
                         variant="ghost"
                         onClick={() => router.push("/search")}
+
                     />
                 ) : (
                     <InputGroup size="md">

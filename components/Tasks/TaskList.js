@@ -32,7 +32,9 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 
 
-export const TaskList = () => {
+const TaskList = () => {
+
+
 
     // SET UP TOAST FROM CHAKRA UI
     const toast = useToast();
@@ -225,7 +227,7 @@ export const TaskList = () => {
 
     return (
         <>
-            <Container>
+            
                 <Flex>
                     <Text fontSize="4xl" fontWeight="bold">
                         Tasks
@@ -382,10 +384,12 @@ export const TaskList = () => {
                     </>
 
                 </Flex>
-            </Container>
+            
         </>
     );
 };
+
+export default TaskList;
 
 
 
