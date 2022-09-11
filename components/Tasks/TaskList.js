@@ -84,6 +84,17 @@ const TaskList = () => {
         setListName(e.listName);
     };
 
+    ////////////////////////////////////////
+    //          Format due.date          //
+    //          to  m/dd format          //
+    ///////////////////////////////////////
+
+    const formatDate = (date) => {
+        const d = new Date(date);
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+        return `${month}/${day}`;
+    };
 
 
     ////////////////////////////////
@@ -223,6 +234,21 @@ const TaskList = () => {
         });
     };
 
+    ///////////////////////////////
+    //  SCROLLING MODAL TO SHOW  //
+    //    ALL INFORMATION        //
+    //    OF A TASK              //
+    ///////////////////////////////
+
+    const { isOpen: isOpenScrolling, onOpen: onOpenScrolling, onClose: onCloseScrolling } = useDisclosure();
+
+    const [scrollingTask, setScrollingTask] = useState({});
+    const handleOpenScrolling = (e) => {
+        setScrollingTask(e);
+        onOpenScrolling();
+    };
+
+
 
 
 
@@ -237,30 +263,111 @@ const TaskList = () => {
 
 
                 {taskList.map((task) => (
-                        <Flex key={task.id} direction="row" padding='0' margin='0'> 
-                            
-                            <Flex direction="row" padding='0' margin='0' width='100%'>
-                                
-                                <Box>
-                                    <Text padding='0' margin='0'>
-                                        {task.taskName}
-                                    </Text>
-                                </Box>
-                                <Box>
-                                    <Text padding='0' margin='0'>
-                                        {task.due_date}
-                                    </Text>
-                                </Box>
-                            </Flex>
+                    <Flex key={task.id} direction="row" padding='0' margin='0'>
 
-                            <IconButton 
-                                aria-label="Open Task Details"
-                                icon={<InfoOutlineIcon />}
-                                variant="ghost"
-                            onClick={() => openTaskDetailsModal(task.id)}
-                            />
+                        <Flex
+                            direction="row"
+                            padding='0'
+                            margin='0'
+                            width='100%'
+                            onClick={() => handleComplete(task.id)}
+                            style={{
+                                textDecoration: task.completed ? "line-through" : ""
+                                    && task.completed ? "grey" : ""
+                            }}
+                            
+
+                        >
+
+                            <Box justifyContent="flex-start">
+                                <Text padding='0' paddingRight='1.5' margin='0'>
+                                    {task.taskName}
+                                </Text>
+                            </Box>
+                            <Box justifyContent="flex-end">
+                                <Text padding='0' paddingX='1.5' margin='0'>
+                                    {formatDate(task.due_date)}
+                                </Text>
+                            </Box>
                         </Flex>
+
+                        <IconButton
+                            aria-label="Open Task Details"
+                            icon={<InfoOutlineIcon />}
+                            variant="ghost"
+                            onClick={() => handleOpenScrolling(task)}
+                        />
+                    </Flex>
                 ))}
+
+                <>
+                    <Modal isOpen={isOpenScrolling} onClose={onCloseScrolling} size="xl">
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>{scrollingTask.taskName}</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <Flex direction="column">
+                                    <Flex direction="row">
+                                        <Box>
+                                            <Text padding='0' paddingRight='1.5' margin='0'>
+                                                Assigned To:
+                                            </Text>
+                                        </Box>
+                                        <Box>
+                                            <Text padding='0' paddingX='1.5' margin='0'>
+                                                {scrollingTask.assigned_to}
+                                            </Text>
+                                        </Box>
+                                    </Flex>
+                                    <Flex direction="row">
+                                        <Box>
+                                            <Text padding='0' paddingRight='1.5' margin='0'>
+                                                Due Date:
+                                            </Text>
+                                        </Box>
+                                        <Box>
+                                            <Text padding='0' paddingX='1.5' margin='0'>
+                                                {formatDate(scrollingTask.due_date)}
+                                            </Text>
+                                        </Box>
+                                    </Flex>
+                                    <Flex direction="row">
+                                        <Box>
+                                            <Text padding='0' paddingRight='1.5' margin='0'>
+                                                List:
+                                            </Text>
+                                        </Box>
+                                        <Box>
+                                            <Text padding='0' paddingX='1.5' margin='0'>
+                                                {scrollingTask.listName}
+                                            </Text>
+                                        </Box>
+                                    </Flex>
+                                    <Flex direction="row">
+                                        <Box>
+                                            <Text padding='0' paddingRight='1.5' margin='0'>
+                                                Description:
+                                            </Text>
+                                        </Box>
+                                        <Box>
+                                            <Text padding='0' paddingX='1.5' margin='0'>
+                                                {scrollingTask.description}
+                                            </Text>
+                                        </Box>
+                                    </Flex>
+                                </Flex>
+                            </ModalBody>
+
+                            <ModalFooter>
+                                <Button colorScheme="blue" mr={3} onClick={onCloseScrolling}>
+                                    Close
+                                </Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
+
+                </>
 
 
                 <>
