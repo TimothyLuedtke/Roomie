@@ -36,6 +36,9 @@ import TaskBar from "./taskBar";
 
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 
+import { EditTask } from "./editTask";
+
+
 
 const TaskList = () => {
 
@@ -70,19 +73,6 @@ const TaskList = () => {
         setListName("");
     };
 
-    ////////////////////////////////////////
-
-    //          SET FORM VALUES        ////
-
-    ///////////////////////////////////////
-
-    const presetForm = (e) => {
-        setTaskName(e.taskName);
-        setDescription(e.description);
-        setDue_date(e.due_date);
-        setAssigned_to(e.assigned_to);
-        setListName(e.listName);
-    };
 
     ////////////////////////////////////////
     //          Format due.date          //
@@ -198,41 +188,7 @@ const TaskList = () => {
         });
     };
 
-    //////////////////////////////
 
-    // EDIT TASK   VIA MODAL  ////
-
-    //////////////////////////////
-
-    const { isOpen: isOpenEditTask, onOpen: onOpenEditTask, onClose: onCloseEditTask } = useDisclosure();
-
-    const [editTask, setEditTask] = useState(null);
-
-    const handleEdit = (task) => {
-        setEditTask(task);
-        presetForm(task);
-        onOpenEditTask();
-    };
-
-    const handleEditSubmit = (e) => {
-        e.preventDefault();
-        const newTaskList = taskList.map((task) => {
-            if (task.id === editTask.id) {
-                return { ...task, taskName, description, due_date, assigned_to, listName };
-            }
-            return task;
-        });
-        setTaskList(newTaskList);
-        resetForm();
-        onCloseEditTask();
-        toast({
-            title: "Task updated.",
-            description: "We've updated your task.",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-        });
-    };
 
     ///////////////////////////////
     //  SCROLLING MODAL TO SHOW  //
@@ -247,8 +203,6 @@ const TaskList = () => {
         setScrollingTask(e);
         onOpenScrolling();
     };
-
-
 
 
 
@@ -304,10 +258,25 @@ const TaskList = () => {
                     <Modal isOpen={isOpenScrolling} onClose={onCloseScrolling} size="xl">
                         <ModalOverlay />
                         <ModalContent>
-                            <ModalHeader>{scrollingTask.taskName}</ModalHeader>
+                            <ModalHeader>
+                                <EditTask task={scrollingTask} />
+
+                            </ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
                                 <Flex direction="column">
+                                <Flex direction="row">
+                                        <Box>
+                                            <Text padding='0' paddingRight='1.5' margin='0'>
+                                                Task:
+                                            </Text>
+                                        </Box>
+                                        <Box>
+                                            <Text padding='0' paddingX='1.5' margin='0'>
+                                            {scrollingTask.taskName}
+                                            </Text>
+                                        </Box>
+                                    </Flex>
                                     <Flex direction="row">
                                         <Box>
                                             <Text padding='0' paddingRight='1.5' margin='0'>
@@ -425,46 +394,7 @@ const TaskList = () => {
                             </ModalFooter>
                         </ModalContent>
                     </Modal>
-                </>
-                <>
-                    <Modal isOpen={isOpenEditTask} onClose={onCloseEditTask} >
-                        <ModalOverlay />
-                        <ModalContent>
-                            <ModalHeader></ModalHeader>
-                            <ModalBody>
-                                <Stack spacing={3}>
-                                    <Input
-                                        placeholder={taskName !== "" ? taskName : "Task Name"}
-                                        onChange={(e) => setTaskName(e.target.value)}
-                                    />
-                                    <Input
-                                        placeholder={description !== "" ? description : "Description"}
-                                        onChange={(e) => setDescription(e.target.value)}
-                                    />
-                                    <Input
-                                        placeholder={due_date !== "" ? due_date : "Due Date"}
-                                        onChange={(e) => setDue_date(e.target.value)}
-                                    />
-                                    <Input
-                                        placeholder={assigned_to !== "" ? assigned_to : "Assigned To"}
-                                        onChange={(e) => setAssigned_to(e.target.value)}
-                                    />
-                                    <Input
-                                        placeholder={listName !== "" ? listName : "List Name"}
-                                        onChange={(e) => setListName(e.target.value)}
-                                    />
-                                </Stack>
-                            </ModalBody>
-
-                            <ModalFooter>
-                                <Button colorScheme="blue" variant="outline" mr={3} onClick={handleEditSubmit}>
-                                    Edit Task
-                                </Button>
-                                <Button variant="outline" onClick={onCloseEditTask}>Cancel</Button>
-                            </ModalFooter>
-                        </ModalContent>
-                    </Modal>
-                </>
+                </>       
 
             </Flex>
         </Container>
