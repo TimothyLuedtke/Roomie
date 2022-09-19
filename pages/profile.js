@@ -2,6 +2,9 @@ import { useUser } from "../lib/hooks";
 import { useRouter } from "next/router";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { FaUserCircle } from "react-icons/fa";
+import Head from "next/head";
+import TopNavbar from "../components/TopNavbar";
+import BottomNavbar from "../components/BtmNavbar";
 
 export default function Profile() {
     const user = useUser({ redirectTo: "/login" });
@@ -21,6 +24,9 @@ export default function Profile() {
     }
     
     return (
+        <>
+            <Head />
+            <TopNavbar />
         <Flex
         height="100vh"
         alignItems="center"
@@ -42,6 +48,8 @@ export default function Profile() {
 
         <Button onClick={() => router.push("/login")}>Logout</Button>
         </Flex>
+        <BottomNavbar />
+        </>
     );
     }
 

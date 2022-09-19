@@ -14,12 +14,12 @@ const Login = () => {
     if (errorMsg) setErrorMsg('')
 
     const body = {
-      username: e.currentTarget.username.value,
+      email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     }
 
     try {
-      const res = await fetch('/api/user/login', {
+      const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
