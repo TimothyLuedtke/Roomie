@@ -1,47 +1,41 @@
-import Head from 'next/head';
-import TopNavbar from "../components/topNavbar"
-import BottomNavbar from "../components/btmNavbar"
+import { useState } from "react";
+import Router from "next/router";
+import { useUser } from "../lib/hooks";
+import Form from "../components/user/form";
 
+const Signup = () => {
+  useUser({ redirectTo: "/", redirectIfFound: true });
 
-export default function Signup() {
+  const [errorMsg, setErrorMsg] = useState("");
 
-    const AddUser = async (e) => {
-        e.preventDefault();
-        const res = await fetch('/api/user/addUser', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: e.target.name.value,
-                email: e.target.email.value,
-                password: e.target.password.value,
-            }),
-        });
-        const json = await res.json();
-        if (!res.ok) throw Error(json.message);
-        console.log(json);
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    if (errorMsg) setErrorMsg("");
+
+    const body = {
+      username: e.currentTarget.username.value,
+      password: e.currentTarget.password.value,
     };
 
+    try {
+      const res = await fetch("/api/user/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.status === 200) {
+        Router.push("/profile");
+      } else {
+        throw new Error(await res.text());
+      }
+    } catch (error) {
+      console.error("An unexpected error happened occurred:", error);
+      setErrorMsg(error.message);
+    }
+  }
 
-
-    return (
-        <>
-            <Head />
-            <TopNavbar /> 
-                  
-            <form onSubmit={AddUser}>
-                <label htmlFor="name">Name</label>
-                <input type="text" name="name" id="name" />
-                <label htmlFor="email">Email</label>
-                <input type="email" name="email" id="email" />
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" id="password" />
-                <button type="submit">Sign Up</button>
-            </form>
-
-            
-            <BottomNavbar />
-        </>
-    )
+  return <Form isLogin={false} errorMessage={errorMsg} onSubmit={handleSubmit} />;
 }
+
+export default Signup;

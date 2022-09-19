@@ -8,7 +8,7 @@ import { Flex, IconButton, Input, InputGroup, InputLeftElement, useBreakpointVal
 import { FaSearch, FaHome, FaCalendarAlt, FaCheck, FaPlus, FaUser } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { extendTheme } from "@chakra-ui/react"
-
+import { useUser } from "../lib/hooks";
 
 export default function TopNavbar() {
     const router = useRouter();
@@ -57,8 +57,8 @@ export default function TopNavbar() {
                     icon={<FaCheck />}
                     size="lg"
                     variant="ghost"
-                    onClick={() => router.push("/TaskPage")}
-                    layerStyle = {router.pathname === "/TaskPage" ? "selected" : ""}
+                    onClick={() => router.push("/tasks")}
+                    layerStyle = {router.pathname === "/tasks" ? "selected" : ""}
                 />
             </Flex>
 
@@ -94,14 +94,25 @@ export default function TopNavbar() {
                     variant="ghost"
                     onClick={() => router.push("/add")}
                 />
+                {useUser() ? (
                 <IconButton
                     aria-label="Account"
                     icon={<FaUser />}
                     size="lg"
                     variant="ghost"
-                    onClick={() => router.push("/AccountPage")}
-                    layerStyle = {router.pathname === "/AccountPage" ? "selected" : ""}
+                    onClick={() => router.push("/profile")}
+                    layerStyle = {router.pathname === "/profile" ? "selected" : ""}
                 />
+                ) : (
+                <IconButton
+                    aria-label="Login"
+                    icon={<FaUser />}
+                    size="lg"
+                    variant="ghost"
+                    onClick={() => router.push("/login")}
+                />
+                )}
+
             </Flex>
         </Flex>
     );
