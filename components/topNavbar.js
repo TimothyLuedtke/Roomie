@@ -99,7 +99,8 @@ export default function TopNavbar() {
                     icon={<FaUser />}
                     size="lg"
                     variant="ghost"
-                    onClick={() => router.push("/account")}
+                    onClick={() => router.push("/AccountPage")}
+                    layerStyle = {router.pathname === "/AccountPage" ? "selected" : ""}
                 />
             </Flex>
         </Flex>
